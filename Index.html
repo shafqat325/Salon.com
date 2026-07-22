@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STRAND — Hair Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #17160f;
+    --paper: #f7f5f0;
+    --paper-soft: #efece4;
+    --pine: #2f4538;
+    --pine-soft: #4a6355;
+    --line: rgba(23,22,15,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  ::selection { background: var(--pine); color: var(--paper); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px clamp(24px, 5vw, 64px);
+    mix-blend-mode: difference;
+  }
+  nav .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.08em;
+    color: #fff;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: clamp(20px, 3vw, 40px);
+  }
+  nav ul li a {
+    color: #fff;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    transition: opacity 0.25s ease;
+  }
+  nav ul li a:hover { opacity: 1; }
+  .nav-mobile-hide { display: flex; }
+  @media (max-width: 640px) {
+    .nav-mobile-hide { gap: 14px; }
+    nav ul li a { font-size: 0.68rem; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 140px 24px 80px;
+    position: relative;
+  }
+  .hero .eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--pine-soft);
+    margin-bottom: 22px;
+    opacity: 0;
+    animation: rise 0.9s 0.1s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 9vw, 7.2rem);
+    line-height: 0.98;
+    color: var(--ink);
+    opacity: 0;
+    animation: rise 1s 0.25s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--pine);
+  }
+  .hero p {
+    max-width: 480px;
+    margin: 28px auto 0;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: #4a4839;
+    opacity: 0;
+    animation: rise 1s 0.4s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  .hero .cta {
+    margin-top: 40px;
+    opacity: 0;
+    animation: rise 1s 0.55s cubic-bezier(.16,1,.3,1) forwards;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 16px 38px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+  .btn:hover { background: transparent; color: var(--ink); }
+  .btn:active { transform: scale(0.97); }
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+  /* signature: hair-strand line divider */
+  .strand-divider {
+    width: 100%;
+    max-width: 720px;
+    height: 60px;
+    margin: 10px auto 0;
+    opacity: 0;
+    animation: rise 1.2s 0.7s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  .strand-divider path {
+    stroke: var(--pine);
+    stroke-width: 1.4;
+    fill: none;
+    stroke-dasharray: 900;
+    stroke-dashoffset: 900;
+    animation: draw 2.4s 1s cubic-bezier(.65,0,.35,1) forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  /* ---------- Section shell ---------- */
+  section {
+    padding: 120px clamp(24px, 6vw, 96px);
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 64px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 24px;
+  }
+  .section-head .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--pine-soft);
+  }
+  .section-head h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-top: 8px;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+  /* ---------- Services ---------- */
+  .service-list { border-top: 1px solid var(--line); }
+  .service-row {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr auto;
+    align-items: baseline;
+    gap: 24px;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding-left 0.3s ease;
+  }
+  .service-row:hover { padding-left: 12px; }
+  .service-row .idx {
+    font-size: 0.85rem;
+    color: var(--pine-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .service-row .info h3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+  .service-row .info p {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #6b6858;
+    max-width: 480px;
+  }
+  .service-row .price {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .service-row { grid-template-columns: 1fr; gap: 6px; }
+    .service-row .idx { display: none; }
+  }
+
+  /* ---------- Booking ---------- */
+  .booking {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 28px;
+  }
+  .booking .section-head { border-color: rgba(247,245,240,0.15); }
+  .booking .section-head .eyebrow { color: #9db7a5; }
+
+  .booking-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+  @media (max-width: 860px) {
+    .booking-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+  .booking-copy p {
+    color: rgba(247,245,240,0.72);
+    line-height: 1.7;
+    font-size: 1rem;
+    max-width: 380px;
+  }
+  .booking-copy .hours {
+    margin-top: 36px;
+    border-top: 1px solid rgba(247,245,240,0.15);
+    padding-top: 24px;
+  }
+  .booking-copy .hours div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    color: rgba(247,245,240,0.85);
+  }
+
+  form { display: flex; flex-direction: column; gap: 18px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(247,245,240,0.6);
+  }
+  .field input, .field select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(247,245,240,0.3);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 10px 2px;
+    outline: none;
+    transition: border-color 0.25s ease;
+  }
+  .field input::placeholder { color: rgba(247,245,240,0.35); }
+  .field input:focus, .field select:focus { border-color: #9db7a5; }
+  .field select option { color: #17160f; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 500px) { .row2 { grid-template-columns: 1fr; } }
+
+  .submit-btn {
+    margin-top: 14px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--paper);
+  }
+  .submit-btn:hover { background: transparent; color: var(--paper); }
+
+  .confirm-msg {
+    display: none;
+    margin-top: 18px;
+    padding: 16px 18px;
+    border: 1px solid #9db7a5;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    color: #cfe0d6;
+  }
+  .confirm-msg.show { display: block; animation: rise 0.5s ease forwards; }
+
+  /* ---------- Contact ---------- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  @media (max-width: 780px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+  }
+  .contact-card .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pine-soft);
+    margin-bottom: 12px;
+  }
+  .contact-card p, .contact-card a {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  .socials { display: flex; gap: 16px; margin-top: 4px; }
+  .socials a {
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+    transition: border-color 0.25s ease, color 0.25s ease;
+  }
+  .socials a:hover { border-color: var(--pine); color: var(--pine); }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 40px clamp(24px, 6vw, 96px) 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    font-size: 0.8rem;
+    color: #7a775f;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  @media (max-width: 560px) {
+    footer { flex-direction: column; gap: 10px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">STRAND</div>
+  <ul class="nav-mobile-hide">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#book">Book</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Hair Studio</div>
+  <h1>Cut with<br><em>intention.</em></h1>
+  <p>A quiet, considered space for haircuts and styling — precise work, unhurried appointments.</p>
+  <div class="cta"><a href="#book" class="btn">Book an appointment</a></div>
+  <svg class="strand-divider" viewBox="0 0 720 60" preserveAspectRatio="none">
+    <path d="M0,30 C 120,5 180,55 360,30 S 600,5 720,30" />
+  </svg>
+</section>
+
+<section id="services">
+  <div class="section-head reveal">
+    <div>
+      <div class="eyebrow">What we do</div>
+      <h2>Services</h2>
+    </div>
+  </div>
+  <div class="service-list reveal">
+    <div class="service-row">
+      <span class="idx">01</span>
+      <div class="info">
+        <h3>Signature Haircut</h3>
+        <p>Consultation, wash, precision cut, and finish tailored to face shape and texture.</p>
+      </div>
+      <span class="price">$45</span>
+    </div>
+    <div class="service-row">
+      <span class="idx">02</span>
+      <div class="info">
+        <h3>Blow-Dry &amp; Styling</h3>
+        <p>Smooth, voluminous, or textured finish — styled for the occasion.</p>
+      </div>
+      <span class="price">$30</span>
+    </div>
+    <div class="service-row">
+      <span class="idx">03</span>
+      <div class="info">
+        <h3>Cut + Style Combo</h3>
+        <p>Our signature haircut paired with a full styling finish.</p>
+      </div>
+      <span class="price">$65</span>
+    </div>
+    <div class="service-row">
+      <span class="idx">04</span>
+      <div class="info">
+        <h3>Kids Haircut</h3>
+        <p>Gentle, quick, and friendly — for guests under 12.</p>
+      </div>
+      <span class="price">$25</span>
+    </div>
+  </div>
+</section>
+
+<section id="book" class="booking reveal">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">Reserve your slot</div>
+      <h2>Book an appointment</h2>
+    </div>
+  </div>
+  <div class="booking-grid">
+    <div class="booking-copy">
+      <p>Tell us what you're after and when suits you. We'll confirm your slot by phone or message shortly after.</p>
+      <div class="hours">
+        <div><span>Mon – Fri</span><span>10:00 – 19:00</span></div>
+        <div><span>Saturday</span><span>10:00 – 17:00</span></div>
+        <div><span>Sunday</span><span>Closed</span></div>
+      </div>
+    </div>
+    <form id="bookingForm">
+      <div class="field">
+        <label for="name">Full name</label>
+        <input type="text" id="name" placeholder="Your name" required>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" placeholder="03xx-xxxxxxx" required>
+        </div>
+        <div class="field">
+          <label for="service">Service</label>
+          <select id="service" required>
+            <option value="" disabled selected>Choose one</option>
+            <option>Signature Haircut</option>
+            <option>Blow-Dry & Styling</option>
+            <option>Cut + Style Combo</option>
+            <option>Kids Haircut</option>
+          </select>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="date">Preferred date</label>
+          <input type="date" id="date" required>
+        </div>
+        <div class="field">
+          <label for="time">Preferred time</label>
+          <input type="time" id="time" required>
+        </div>
+      </div>
+      <button type="submit" class="btn submit-btn">Request appointment</button>
+      <div class="confirm-msg" id="confirmMsg">Thanks — your request has been received. We'll confirm shortly by phone.</div>
+    </form>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-head reveal">
+    <div>
+      <div class="eyebrow">Find us</div>
+      <h2>Contact</h2>
+    </div>
+  </div>
+  <div class="contact-grid reveal">
+    <div class="contact-card">
+      <div class="eyebrow">Phone</div>
+      <p><a href="tel:+920000000000">+92 000 0000000</a></p>
+    </div>
+    <div class="contact-card">
+      <div class="eyebrow">Address</div>
+      <p>Shop 12, Main Boulevard,<br>Your City, Pakistan</p>
+    </div>
+    <div class="contact-card">
+      <div class="eyebrow">Follow</div>
+      <div class="socials">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="#">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 STRAND Hair Studio</span>
+  <span>Made with care, cut with precision.</span>
+</footer>
+
+<script>
+  // scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => io.observe(el));
+
+  // booking form
+  const form = document.getElementById('bookingForm');
+  const confirmMsg = document.getElementById('confirmMsg');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    confirmMsg.classList.add('show');
+    form.querySelector('.submit-btn').textContent = 'Request sent ✓';
+    setTimeout(() => {
+      form.reset();
+    }, 100);
+  });
+</script>
+
+</body>
+</html>
